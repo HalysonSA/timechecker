@@ -1,80 +1,78 @@
-import { useState } from 'react';
-
-type City = {
-    name: string;
-    lat: number;
-    lon: number;
-    country: string;
-    state: string;
-};
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import MenuListCities, { State } from '../components/menu/menuListCities';
+import { addCity } from '../components/redux/citySlice';
 
 export default function Home() {
     const [searchText, setSearchText] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    const [selectedCity, setSelectedCity] = useState<City | null>(null);
+    const [toggle, setToggle] = useState(false);
+
+    const dispatch = useDispatch();
+    const citySearched = useSelector((state: State) => state.city);
+
+    useEffect(() => {
+        console.log(toggle);
+        citySearched.map((city) => {
+            if (city.name.toUpperCase() == searchText.toUpperCase()) {
+                setToggle(true);
+            } else {
+                setToggle(false);
+            }
+        });
+    }, [searchText, citySearched]);
 
     async function handleSearch() {
         const response = await fetch(
             `http://api.openweathermap.org/geo/1.0/direct?q=${searchText}&limit=5&appid=e7e8d4e4788a251c4c7d8efeba5f64a2`
         );
         const data = await response.json();
-        setSearchResult(data);
-        if (data.length === 0) {
-            alert('Nenhuma cidade encontrada');
-        }
-        console.log(data);
-    }
 
-    async function handleCheckTime() {
-        const response = await fetch(
-            `http://api.openweathermap.org/data/2.5/forecast?lat=${selectedCity?.lat}&lon=${selectedCity?.lon}&appid=e7e8d4e4788a251c4c7d8efeba5f64a2`
-        );
-        const data = await response.json();
-        console.log(data);
+        if (!data.cod) {
+            setSearchResult(data);
+            dispatch(addCity(data));
+        } else {
+            alert('Cidade não encontrada! ');
+        }
     }
 
     if (searchResult.length > 0 && searchText.length === 0) setSearchResult([]);
 
     return (
-        <div className="bg-gray-700 p-2 ">
-            <nav className=" flex justify-center">
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        handleSearch();
-                    }}
-                >
-                    <input
-                        type="text"
-                        id="search"
-                        onChange={(e) => setSearchText(e.target.value)}
-                        placeholder="Busque aqui"
-                        className="p-2 rounded-l-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                    />
-                </form>
-                <button
-                    type="submit"
-                    id="btnSearch"
-                    className="bg-blue-500 text-white p-2 rounded-r-lg hover:bg-blue-400 "
-                >
-                    Buscar
-                </button>
-            </nav>
-            <div className="absolute w-40 top-15 inset-x-1/2 transform -translate-x-2/3 flex-col justify-start ">
-                {searchResult.map((city: City) => (
-                    <div
-                        key={city.lat}
-                        className="relative bg-gray-400  p-2  shadow-lg inset-x-50  hover:bg-gray-300 cursor-pointer"
-                        onClick={() => {
-                            setSelectedCity(city);
-                            handleCheckTime();
+        <div className="h-screen bg-white ">
+            <div className="absolute w-screen top-40">
+                <div className="flex flex-col items-center justify-center ">
+                    <p>City, temp</p>
+                    <p>datetime</p>
+                </div>
+            </div>
+            <div className="flex flex-col items-center justify-center h-screen ">
+                <div className="flex flex-row items-center justify-center w-5/6 font-Roboto">
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleSearch();
                         }}
                     >
-                        <span className="text-base">
-                            {city.name}, {city.state}, {city.country}.
-                        </span>
-                    </div>
-                ))}
+                        <input
+                            type="text"
+                            placeholder="Digite o nome da cidade"
+                            className="px-4 py-2  text-md text-sky-600 rounded-l-xl ring-1 ring-sky-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                            value={searchText}
+                            onChange={(e) => {
+                                setSearchText(e.target.value);
+                            }}
+                        />
+                    </form>
+                    <button
+                        type="submit"
+                        className="px-4 py-2 text-white duration-200 rounded-r-xl ring-1 ring-sky-500 bg-sky-500 hover:bg-sky-600 hover:ring-sky-600"
+                        onClick={handleSearch}
+                    >
+                        Buscar
+                    </button>
+                </div>
+                {toggle && <MenuListCities />}
             </div>
         </div>
     );

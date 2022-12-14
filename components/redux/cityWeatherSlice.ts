@@ -34,6 +34,7 @@ export type City = {
     city: {
         name: string;
         country: string;
+        state: string;
         population: number;
         timezone: number;
         sunrise: number;

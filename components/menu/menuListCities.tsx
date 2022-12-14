@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Cities } from '../redux/citySlice';
 import { addCityWeather, City } from '../redux/cityWeatherSlice';
@@ -12,30 +11,25 @@ const MenuListCities = () => {
     const cities = useSelector((state: State) => state.city);
     const dispatch = useDispatch();
 
-    const [selectedCity, setSelectedCity] = useState<Cities | undefined>(
-        undefined
-    );
-
-    async function handleCheckTime() {
+    async function handleCheckTime(selectedCity: Cities) {
         if (selectedCity) {
             const response = await fetch(
                 `http://api.openweathermap.org/data/2.5/forecast?lat=${selectedCity?.lat}&lon=${selectedCity?.lon}&appid=e7e8d4e4788a251c4c7d8efeba5f64a2`
             );
-            const data = await response.json();
-            console.log(data);
+            var data = await response.json();
+            data.city.state = selectedCity.state;
             dispatch(addCityWeather(data));
         }
     }
 
     return (
-        <div className=" inset-y-2/4">
+        <div className=" inset-y-2/4 mt-2">
             <div className="p-2 bg-slate-50 rounded-2xl">
                 {cities.map((city) => {
                     return (
                         <div
                             onClick={() => {
-                                setSelectedCity(city);
-                                handleCheckTime();
+                                handleCheckTime(city);
                             }}
                             key={city.lat}
                             className={

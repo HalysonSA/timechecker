@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Cities } from '../redux/citySlice';
+import { addCityWeather, City } from '../redux/cityWeatherSlice';
 
 export type State = {
     city: Cities[];
+    cityWeather: City;
 };
 
 const MenuListCities = () => {
@@ -21,11 +23,12 @@ const MenuListCities = () => {
             );
             const data = await response.json();
             console.log(data);
+            dispatch(addCityWeather(data));
         }
     }
 
     return (
-        <div className="absolute translate-y-6 inset-y-2/4 ">
+        <div className=" inset-y-2/4">
             <div className="p-2 bg-slate-50 rounded-2xl">
                 {cities.map((city) => {
                     return (

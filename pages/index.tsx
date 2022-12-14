@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import ClimateSummary from '../components/climateSummary';
 import MenuListCities, { State } from '../components/menu/menuListCities';
 import { addCity } from '../components/redux/citySlice';
 
@@ -9,10 +10,10 @@ export default function Home() {
     const [toggle, setToggle] = useState(false);
 
     const dispatch = useDispatch();
+
     const citySearched = useSelector((state: State) => state.city);
 
     useEffect(() => {
-        console.log(toggle);
         citySearched.map((city) => {
             if (city.name.toUpperCase() == searchText.toUpperCase()) {
                 setToggle(true);
@@ -40,39 +41,36 @@ export default function Home() {
 
     return (
         <div className="h-screen bg-white ">
-            <div className="absolute w-screen top-40">
-                <div className="flex flex-col items-center justify-center ">
-                    <p>City, temp</p>
-                    <p>datetime</p>
+            <div className="absolute flex flex-row items-center justify-center w-full ">
+                <div className="p-5 translate-y-5 shadow-xl rounded-xl w-100 ring-1 ring-slate-100">
+                    <ClimateSummary />
                 </div>
             </div>
-            <div className="flex flex-col items-center justify-center h-screen ">
-                <div className="flex flex-row items-center justify-center w-5/6 font-Roboto">
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            handleSearch();
+            <div className="flex flex-col items-center justify-center h-screen gap-3 ">
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSearch();
+                    }}
+                >
+                    <input
+                        type="text"
+                        placeholder="Digite o nome da cidade"
+                        className="p-2 text-lg w-100 font-Roboto ring-1 text-sky-600 rounded-xl focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                        value={searchText}
+                        onChange={(e) => {
+                            setSearchText(e.target.value);
                         }}
-                    >
-                        <input
-                            type="text"
-                            placeholder="Digite o nome da cidade"
-                            className="px-4 py-2  text-md text-sky-600 rounded-l-xl ring-1 ring-sky-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
-                            value={searchText}
-                            onChange={(e) => {
-                                setSearchText(e.target.value);
-                            }}
-                        />
-                    </form>
-                    <button
-                        type="submit"
-                        className="px-4 py-2 text-white duration-200 rounded-r-xl ring-1 ring-sky-500 bg-sky-500 hover:bg-sky-600 hover:ring-sky-600"
-                        onClick={handleSearch}
-                    >
-                        Buscar
-                    </button>
-                </div>
+                    />
+                </form>
                 {toggle && <MenuListCities />}
+                <button
+                    type="submit"
+                    className="py-2 text-white duration-200 w-60 font-Roboto rounded-xl ring-1 ring-sky-500 bg-sky-500 hover:bg-sky-600 hover:ring-sky-600"
+                    onClick={handleSearch}
+                >
+                    Buscar
+                </button>
             </div>
         </div>
     );

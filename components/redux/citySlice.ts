@@ -14,6 +14,7 @@ const citySlice = createSlice({
     reducers: {
         addCity: (state, action: PayloadAction<Cities>) => {
             Object.assign(state, action.payload);
+            console.log('addCity', action.payload);
         },
     },
 });

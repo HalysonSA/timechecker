@@ -14,7 +14,7 @@ const MenuListCities = () => {
     async function handleCheckTime(selectedCity: Cities) {
         if (selectedCity) {
             const response = await fetch(
-                `http://api.openweathermap.org/data/2.5/forecast?lat=${selectedCity?.lat}&lon=${selectedCity?.lon}&appid=e7e8d4e4788a251c4c7d8efeba5f64a2`
+                `https://api.openweathermap.org/data/2.5/forecast?lat=${selectedCity?.lat}&lon=${selectedCity?.lon}&appid=e7e8d4e4788a251c4c7d8efeba5f64a2`
             );
             var data = await response.json();
             data.city.state = selectedCity.state;
@@ -23,7 +23,7 @@ const MenuListCities = () => {
     }
 
     return (
-        <div className=" inset-y-2/4 mt-2">
+        <div className="mt-2  inset-y-2/4">
             <div className="p-2 bg-slate-50 rounded-2xl">
                 {cities.map((city) => {
                     return (

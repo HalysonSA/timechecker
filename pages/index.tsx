@@ -17,7 +17,7 @@ export default function Home() {
     async function handleSearch() {
         setIsLoading(true);
         const response = await fetch(
-            `http://api.openweathermap.org/geo/1.0/direct?q=${searchText}&limit=5&appid=e7e8d4e4788a251c4c7d8efeba5f64a2`
+            `https://api.openweathermap.org/geo/1.0/direct?q=${searchText}&limit=5&appid=e7e8d4e4788a251c4c7d8efeba5f64a2`
         );
         const data = await response.json();
 

@@ -12,7 +12,7 @@ const ClimateSummary = () => {
     if (!cityWeather.city)
         return (
             <div className="flex flex-col items-center justify-center  p-4">
-                <p className="text-4xl font-medium text-sky-500">
+                <p className="text-4xl font-medium text-sky-600">
                     Previsão do Tempo
                 </p>
             </div>

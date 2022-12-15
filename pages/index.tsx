@@ -1,10 +1,10 @@
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { MdSearch } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import ClimateSummary from '../components/climateSummary';
 import MenuListCities, { State } from '../components/menu/menuListCities';
 import { addCity } from '../components/redux/citySlice';
-
 export default function Home() {
     const [searchText, setSearchText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +20,6 @@ export default function Home() {
             `http://api.openweathermap.org/geo/1.0/direct?q=${searchText}&limit=5&appid=e7e8d4e4788a251c4c7d8efeba5f64a2`
         );
         const data = await response.json();
-        console.log(data);
 
         if (!data.cod) {
             dispatch(addCity(data));
@@ -29,19 +28,25 @@ export default function Home() {
     }
 
     useEffect(() => {
-        cities.map((city) => {
-            if (city.name.toUpperCase() == searchText.toUpperCase()) {
-                setToggle(true);
-            } else {
-                setToggle(false);
-            }
-        });
+        const city = cities[0];
+
+        if (city.name.toUpperCase() == searchText.toUpperCase()) {
+            setToggle(true);
+        } else {
+            setToggle(false);
+        }
     }, [searchText, cities]);
 
     return (
         <div>
             <div className="w-screen h-auto min-h-screen bg-teal-50 flex items-center justify-center p-4">
                 <div className="flex flex-col justify-center items-center  shadow-2xl p-4 pb-10  rounded-2xl  bg-white   lg:w-1/3 ">
+                    <Image
+                        src="/logo.png"
+                        alt="logo"
+                        width={200}
+                        height={200}
+                    />
                     <form
                         className="flex flex-row items-center justify-center "
                         onSubmit={(e) => {
@@ -52,7 +57,7 @@ export default function Home() {
                         <input
                             type="text"
                             placeholder="Digite o nome da cidade"
-                            className="p-2 pl-4 ring-1 text-lg ring-sky-500 rounded-l-3xl font-Roboto focus:ring-2 focus:ring-sky-500 focus:outline-none text-sky-600"
+                            className="p-2 pl-4 ring-1 text-lg ring-sky-500 rounded-l-3xl font-Roboto  focus:ring-sky-600 focus:outline-none focus:bg-sky-50 text-sky-600"
                             value={searchText}
                             onChange={(e) => {
                                 setSearchText(e.target.value);

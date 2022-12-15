@@ -23,7 +23,7 @@ const MenuListCities = () => {
     }
 
     return (
-        <div className="mt-2  inset-y-2/4">
+        <div className="mt-2 inset-y-2/4">
             <div className="p-2 bg-slate-50 rounded-2xl">
                 {cities.map((city) => {
                     return (
@@ -33,7 +33,7 @@ const MenuListCities = () => {
                             }}
                             key={city.lat}
                             className={
-                                ' bg-slate-50 p-2 hover:bg-slate-100 hover:cursor-pointer '
+                                ' bg-slate-50 p-2 hover:bg-slate-100 hover:cursor-pointer select-none '
                             }
                         >
                             {city.name}, {city.state} - {city.country}

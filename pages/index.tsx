@@ -10,7 +10,7 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(false);
     const [toggle, setToggle] = useState(false);
 
-    const cities = useSelector((state: State) => state.city);
+    const cityWeather = useSelector((state: State) => state.cityWeather);
 
     const dispatch = useDispatch();
 
@@ -28,12 +28,25 @@ export default function Home() {
     }
 
     useEffect(() => {
-        if (searchText.length > 0) {
+        //https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
+
+        const cWeather = cityWeather?.city?.name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase();
+        const sText = searchText
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase();
+
+        if (sText === '') {
+            setToggle(false);
+        } else if (cWeather !== sText) {
             setToggle(true);
         } else {
             setToggle(false);
         }
-    }, [searchText]);
+    }, [searchText, cityWeather?.city?.name]);
 
     if (typeof window !== 'undefined') {
         if (typeof window !== 'undefined') {

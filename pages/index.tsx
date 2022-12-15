@@ -28,19 +28,28 @@ export default function Home() {
     }
 
     useEffect(() => {
-        const city = cities[0];
-
-        if (city.name.toUpperCase() == searchText.toUpperCase()) {
+        if (searchText.length > 0) {
             setToggle(true);
         } else {
             setToggle(false);
         }
-    }, [searchText, cities]);
+    }, [searchText]);
+
+    if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined') {
+            document.addEventListener('keydown', (event) => {
+                if (event.key === '/' || (event.ctrlKey && event.key === 'k')) {
+                    event.preventDefault();
+                    document.getElementById('search')?.focus();
+                }
+            });
+        }
+    }
 
     return (
         <div>
-            <div className="w-screen h-auto min-h-screen bg-teal-50 flex items-center justify-center p-4">
-                <div className="flex flex-col justify-center items-center  shadow-2xl p-4 pb-10  rounded-2xl  bg-white   lg:w-1/3 ">
+            <div className="flex items-center justify-center w-screen h-auto min-h-screen p-4 bg-teal-50">
+                <div className="flex flex-col items-center justify-center p-4 pb-10 bg-white shadow-2xl rounded-2xl lg:w-1/3 ">
                     <Image
                         src="/logo.png"
                         alt="logo"
@@ -55,9 +64,10 @@ export default function Home() {
                         }}
                     >
                         <input
+                            id="search"
                             type="text"
                             placeholder="Digite o nome da cidade"
-                            className="p-2 pl-4 ring-1 text-lg ring-sky-500 rounded-l-3xl font-Roboto  focus:ring-sky-600 focus:outline-none focus:bg-sky-50 text-sky-600"
+                            className="p-2 pl-4 text-lg ring-1 ring-sky-500 rounded-l-3xl font-Roboto focus:ring-sky-600 focus:outline-none focus:bg-sky-50 text-sky-600"
                             value={searchText}
                             onChange={(e) => {
                                 setSearchText(e.target.value);
@@ -65,7 +75,7 @@ export default function Home() {
                         />
                         <button
                             type="submit"
-                            className=" border-4 border-sky-500 rounded-r-3xl p-1 px-3 font-Roboto bg-sky-500 hover:bg-sky-600 hover:border-sky-600 text-white"
+                            className="p-1 px-3 text-white border-4 border-sky-500 rounded-r-3xl font-Roboto bg-sky-500 hover:bg-sky-600 hover:border-sky-600"
                             onClick={handleSearch}
                         >
                             <MdSearch size={30} />
@@ -73,8 +83,8 @@ export default function Home() {
                     </form>
 
                     {isLoading && (
-                        <div className="flex flex-col justify-center items-center mb-5 mt-5">
-                            <div className="h-10 w-10 border-4 border-l-gray-200 border-r-gray-200 border-t-gray-200 border-b-sky-500 rounded-full animate-spin ease-linear" />
+                        <div className="flex flex-col items-center justify-center mt-5 mb-5">
+                            <div className="w-10 h-10 ease-linear border-4 rounded-full border-l-gray-200 border-r-gray-200 border-t-gray-200 border-b-sky-500 animate-spin" />
                         </div>
                     )}
                     {toggle && <MenuListCities />}

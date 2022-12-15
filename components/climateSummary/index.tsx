@@ -11,7 +11,7 @@ const ClimateSummary = () => {
 
     if (!cityWeather.city)
         return (
-            <div className="flex flex-col items-center justify-center  p-4">
+            <div className="flex flex-col items-center justify-center p-4">
                 <p className="text-4xl font-medium text-sky-600">
                     Previsão do Tempo
                 </p>
@@ -58,23 +58,23 @@ const ClimateSummary = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center max-w-sm my-5 gap-5">
-            <div className="bg-sky-500  rounded-full p-1 ">
-                <img src={icon} className="object-fill" />
+        <div className="flex flex-col items-center justify-center max-w-sm gap-5 my-5">
+            <div className="p-1 rounded-full bg-sky-500 ">
+                <img src={icon} alt="" className="object-fill" />
             </div>
-            <p className="font-Roboto text-lg text-sky-500">
+            <p className="text-lg font-Roboto text-sky-500">
                 {TranslateDescription(time)}
             </p>
 
-            <div className="flex flex-col justify-center items-center flex-wrap">
-                <p className="text-4xl font-Roboto font-semibold">
+            <div className="flex flex-col flex-wrap items-center justify-center">
+                <p className="text-4xl font-semibold font-Roboto">
                     {cityWeather.city?.name}
                 </p>
                 <p className="text-3xl font-Roboto font-extralight">
                     {cityWeather.city?.state}
                 </p>
             </div>
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col items-center justify-center">
                 <p className="text-xl">
                     {moment(date).format('HH')}h {moment(date).format('mm')}min
                 </p>
